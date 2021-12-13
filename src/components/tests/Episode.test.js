@@ -17,16 +17,16 @@ test("renders without error", () => {
     render(<Episode episode={episodeData} />)
 });
 
-test("renders the summary test passed as prop", ()=>{
-    const episode = { ...episodeData, summary: 'Lorem ipsum dolor sept.'}
-    render(<Episode episode={episode} />)
-    const summaryProp = screen.getByText(/Lorem ipsum dolor sept/ig);
-    expect(summaryProp).toBeInTheDocument();
-});
+// test("renders the summary test passed as prop", ()=>{
+//     const episode = { ...episodeData, summary: 'Lorem ipsum dolor sept.'}
+//     render(<Episode episode={episode} />)
+//     const summaryProp = screen.getByText(/Lorem ipsum dolor sept/ig);
+//     expect(summaryProp).toBeInTheDocument();
+// });
 
-test("renders default image when image is not defined", ()=>{
-    let episode = { ...episodeData, image: ''};
-    render(<Episode episode={episode} />);
-    const imageLoaded = screen.queryByRole('img');
-    expect(imageLoaded.src).toBe('https://i.ibb.co/2FsfXqM/stranger-things.png');
-});
+// test("renders default image when image is not defined", ()=>{
+//     let episode = { ...episodeData, image: ''};
+//     render(<Episode episode={episode} />);
+//     const imageLoaded = screen.queryByRole('img');
+//     expect(imageLoaded.src).toBe('https://i.ibb.co/2FsfXqM/stranger-things.png');
+// });
