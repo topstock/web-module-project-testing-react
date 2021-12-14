@@ -1,6 +1,6 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import Show from './../Show';
@@ -48,10 +48,39 @@ test('renders same number of options seasons are passed in', ()=>{
 test('handleSelect is called when an season is selected', () => {
     const mockHandleSelect = jest.fn();
     render(<Show show={showData} selectedSeason='none' handleSelect={mockHandleSelect} />);
-    const options = screen.getByRole('listbox');
-    userEvent.selectOptions(options, ['1']);
+    const seasonList = screen.queryByLabelText(/Select A Season/i);
+    userEvent.selectOptions(seasonList, ['3456']);
 
     expect(mockHandleSelect).toBeCalled();
 });
 
-test('component renders when no seasons are selected and when rerenders with a season passed in', () => {});
+test('episode component renders when no seasons are selected and when rerenders with a season passed in', async () => {
+    const show = {
+        ...showData,
+        seasons: [ ...showData.seasons,         
+            {
+            id: 4567,
+            name: "Lorem ipsum Season 4",
+            episodes: [ {
+                id:1,
+                name: "",
+                image: 'http://static.tvmaze.com/uploads/images/medium_landscape/67/168918.jpg',
+                season:1,
+                number:1,
+                summary: "",
+                runtime: 1,
+            }]
+        }]
+    };
+    render(<Show show={show} selectedSeason='none' />);
+    
+    const episodeLength1 = screen.queryByText(/minutes/i); 
+    const {rerender} = render(<Show show={show} selectedSeason='none' />);
+    rerender(<Show show={show} selectedSeason='3' />);
+
+    const episodeLength2 = screen.queryByText(/minutes/i);
+
+    expect(episodeLength1).not.toBeInTheDocument();
+    expect(episodeLength2).toBeInTheDocument();
+    
+});
